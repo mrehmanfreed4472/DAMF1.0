@@ -122,7 +122,7 @@ export class I18n {
   }
 
   getCurrency(): Currency {
-    return this.currentLanguage === 'ar' ? 'AED' : 'USD';
+    return 'AED';
   }
 
   private updateDocumentDirection(): void {

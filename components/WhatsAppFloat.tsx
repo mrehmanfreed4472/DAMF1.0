@@ -14,7 +14,7 @@ export function WhatsAppFloat() {
   // WhatsApp business number (replace with actual number)
   const whatsappNumber = "+971501234567" // Replace with actual DAM WhatsApp number
   const defaultMessage = isRTL() 
-    ? "مرحباً، أرغب في الاستفسار عن منتجاتكم وخدماتكم."
+    ? "مرح��اً، أرغب في الاستفسار عن منتجاتكم وخدماتكم."
     : "Hello, I would like to inquire about your products and services."
 
   const openWhatsApp = (customMessage?: string) => {
@@ -73,9 +73,9 @@ export function WhatsAppFloat() {
               damping: 20
             }}
             className={`fixed z-50 ${
-              isRTL() 
-                ? 'bottom-24 left-4 sm:left-6'
-                : 'bottom-24 right-4 sm:right-6'
+              isRTL()
+                ? 'bottom-28 left-4 sm:left-6'
+                : 'bottom-28 right-4 sm:right-6'
             }`}
           >
             <Card className="w-80 sm:w-96 bg-white/95 backdrop-blur-xl border border-green-200/50 shadow-xl shadow-green-900/20">
@@ -179,7 +179,7 @@ export function WhatsAppFloat() {
         <motion.div
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          animate={{ 
+          animate={{
             boxShadow: [
               "0 0 0 0 rgba(34, 197, 94, 0.4)",
               "0 0 0 10px rgba(34, 197, 94, 0)",
@@ -192,10 +192,14 @@ export function WhatsAppFloat() {
             ease: "easeOut"
           }}
           className="relative"
+          drag
+          dragElastic={0.2}
+          dragMomentum
+          dragConstraints={{ left: -500, right: 500, top: -500, bottom: 500 }}
         >
           <Button
             size="lg"
-            className="w-14 h-14 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-lg shadow-green-500/25 border-0 group"
+            className="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-lg shadow-green-500/25 border-0 group"
             onClick={() => setIsOpen(!isOpen)}
           >
             <motion.div

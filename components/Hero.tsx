@@ -19,13 +19,13 @@ export function Hero() {
       </div>
 
       <div className="container mx-auto px-4 py-20 lg:py-32 relative">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 gap-12 items-center">
           {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: isRTL() ? 50 : -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center lg:text-left"
+            className="hidden"
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -134,7 +134,7 @@ export function Hero() {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-transparent to-accent/40"></div>
 
               {/* Company Logo */}
-              <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute inset-0 flex items-center justify-center hidden">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -153,7 +153,7 @@ export function Hero() {
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.8 }}
-                className="absolute bottom-6 left-6 right-6"
+                className="absolute bottom-6 left-6 right-6 hidden"
               >
                 <div className="bg-white/95 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20">
                   <div className="flex items-center gap-3 mb-3">

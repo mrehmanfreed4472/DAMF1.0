@@ -37,8 +37,9 @@ export function HeaderEnhanced() {
   return (
     <header className={`sticky top-0 z-50 bg-white shadow-md border-b border-gray-200 ${isRTL() ? 'rtl' : 'ltr'}`}>
       {/* Top bar with contact info */}
-      <div className="bg-primary text-white">
-        <div className="container mx-auto px-4 py-2">
+      <div className="relative text-white overflow-hidden">
+        <div className="absolute inset-0 gradient-animated opacity-90"></div>
+        <div className="container mx-auto px-4 py-2 relative">
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-6">
               <a
@@ -60,7 +61,9 @@ export function HeaderEnhanced() {
               </a>
             </div>
 
-            <LanguageToggle />
+            <div className="flex items-center gap-3">
+              <LanguageToggle />
+            </div>
           </div>
         </div>
       </div>

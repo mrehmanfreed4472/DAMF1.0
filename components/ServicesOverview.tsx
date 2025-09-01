@@ -23,7 +23,7 @@ export function ServicesOverview() {
         isRTL() ? "عزل الحمامات" : "Bathroom Sealing",
         isRTL() ? "عزل البدروم" : "Basement Protection"
       ],
-      price: "Starting AED 25/sqm",
+      price: "Starting 25/sqm",
       gradient: "from-blue-500 to-cyan-500",
       popular: false
     },
@@ -38,7 +38,7 @@ export function ServicesOverview() {
         isRTL() ? "عزل الأسقف" : "Ceiling Insulation",
         isRTL() ? "عزل الأرضيات" : "Floor Insulation"
       ],
-      price: "Starting AED 35/sqm",
+      price: "Starting 35/sqm",
       gradient: "from-orange-500 to-red-500",
       popular: true
     },
@@ -188,8 +188,16 @@ export function ServicesOverview() {
                     </div>
 
                     <div className="text-center">
-                      <div className="text-lg font-bold text-primary mb-4">
-                        {service.price}
+                      <div className="text-center mb-4">
+                        <div className="text-lg font-bold text-primary flex items-center justify-center gap-2">
+                          <span>{service.price}</span>
+                          <img src="https://cdn.builder.io/api/v1/image/assets%2F1f92479787d647a5873d822973f760c7%2Fe6e68374926d438599be94ad2ae86788?format=webp&width=800" alt="AED" className="h-3 w-auto" />
+                        </div>
+                        {/^Starting\s+(\d+)/.test(service.price) && (
+                          <div className="text-xs text-muted-foreground mt-1">
+                            ~ ${ (parseFloat(service.price.match(/Starting\s+(\d+)/)?.[1] || '0') / 3.67).toFixed(1) }/sqm USD
+                          </div>
+                        )}
                       </div>
                       <Button 
                         variant="outline" 

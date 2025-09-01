@@ -463,7 +463,7 @@ export function ChatBot() {
         <motion.div
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          animate={{ 
+          animate={{
             boxShadow: [
               "0 0 0 0 rgba(59, 130, 246, 0.4)",
               "0 0 0 10px rgba(59, 130, 246, 0)",
@@ -476,10 +476,14 @@ export function ChatBot() {
             ease: "easeOut",
             delay: 2
           }}
+          drag
+          dragElastic={0.2}
+          dragMomentum
+          dragConstraints={{ left: -500, right: 500, top: -500, bottom: 500 }}
         >
           <Button
             size="lg"
-            className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg shadow-blue-500/25 border-0 group"
+            className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg shadow-blue-500/25 border-0 group"
             onClick={() => setIsOpen(!isOpen)}
           >
             <motion.div
@@ -487,9 +491,9 @@ export function ChatBot() {
               transition={{ duration: 0.3 }}
             >
               {isOpen ? (
-                <X className="h-5 w-5 text-white" />
+                <X className="h-6 w-6 text-white" />
               ) : (
-                <Bot className="h-5 w-5 text-white group-hover:scale-110 transition-transform" />
+                <Bot className="h-6 w-6 text-white group-hover:scale-110 transition-transform" />
               )}
             </motion.div>
           </Button>

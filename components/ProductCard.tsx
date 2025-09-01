@@ -6,6 +6,7 @@ import { ShoppingCart, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { CurrencyAED } from '@/components/CurrencyAED';
 import { useTranslation } from '@/hooks/use-translation';
 import { useCart } from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
@@ -103,25 +104,8 @@ export function ProductCard({ product }: ProductCardProps) {
 
           <div className="flex items-center justify-between">
             <div>
-              {language === 'en' ? (
-                <div>
-                  <div className="text-lg font-bold text-primary">
-                    ${product.pricing.usd} USD
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {product.pricing.aed} AED
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <div className="text-2xl font-bold text-primary">
-                    {product.pricing.aed} AED
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    لكل وحدة
-                  </div>
-                </div>
-              )}
+              <CurrencyAED value={product.pricing.aed} className="text-2xl font-bold text-primary" />
+              <div className="text-xs text-muted-foreground">${product.pricing.usd} USD</div>
             </div>
           </div>
 

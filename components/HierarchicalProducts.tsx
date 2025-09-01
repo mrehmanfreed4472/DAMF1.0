@@ -28,6 +28,7 @@ import { productCategories } from '@/data/products';
 import { useCart } from '@/contexts/CartContext';
 import { useAdmin } from '@/contexts/AdminContext';
 import { getTechExplanation, friendlySpec, getInstallationDifficulty, getRecommendedUse } from '@/lib/productTerms';
+import { CurrencyAED } from '@/components/CurrencyAED';
 
 interface ExpandedProducts {
   [key: string]: boolean;
@@ -101,6 +102,13 @@ export default function HierarchicalProducts() {
   };
 
   const getPriceRange = (subProducts: SubProduct[]) => {
+    const prices = subProducts.map(sub => sub.pricing.aed);
+    const min = Math.min(...prices);
+    const max = Math.max(...prices);
+    return min === max ? `${min}` : `${min} - ${max}`;
+  };
+
+  const getUsdRange = (subProducts: SubProduct[]) => {
     const prices = subProducts.map(sub => sub.pricing.usd);
     const min = Math.min(...prices);
     const max = Math.max(...prices);
@@ -131,6 +139,7 @@ export default function HierarchicalProducts() {
   const MainProductCard = ({ product }: { product: MainProduct }) => {
     const isExpanded = expandedProducts[product.id];
     const priceRange = getPriceRange(product.subProducts);
+    const priceRangeUsd = getUsdRange(product.subProducts);
     const firstProductImage = product.subProducts[0]?.image;
 
     return (
@@ -138,10 +147,10 @@ export default function HierarchicalProducts() {
         <Card className="glass-effect border-border/30 hover:border-primary/40 transition-all duration-300 premium-shadow overflow-hidden">
           <div className="flex">
             {/* Product Image Section */}
-            <div className="flex-shrink-0 w-48 bg-gray-50">
-              <div className="h-full p-6 flex items-center justify-center">
+            <div className="flex-shrink-0 w-72 bg-gray-50">
+              <div className="h-full p-8 flex items-center justify-center">
                 {firstProductImage ? (
-                  <div className="w-32 h-32 bg-white rounded-lg shadow-sm overflow-hidden border border-border/20">
+                  <div className="w-48 h-48 bg-white rounded-lg shadow-sm overflow-hidden border border-border/20">
                     <img
                       src={firstProductImage}
                       alt={product.name[language]}
@@ -233,7 +242,10 @@ export default function HierarchicalProducts() {
                     <p className="text-sm text-muted-foreground">
                       {isRTL() ? 'نطاق السعر' : 'Price Range'}
                     </p>
-                    <p className="text-lg font-bold text-primary">{priceRange}</p>
+                    <div className="space-y-1">
+                      <CurrencyAED value={priceRange} className="text-lg font-bold text-primary" />
+                      <p className="text-xs text-muted-foreground">{priceRangeUsd}</p>
+                    </div>
                   </div>
                   <Button
                     variant="outline"
@@ -298,7 +310,7 @@ export default function HierarchicalProducts() {
           <div className="flex gap-3 mb-3">
             {/* Product Image */}
             <div className="flex-shrink-0">
-              <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden border border-border/20">
+              <div className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden border border-border/20">
                 <img
                   src={subProduct.image}
                   alt={subProduct.name[language]}
@@ -346,8 +358,8 @@ export default function HierarchicalProducts() {
             
             {/* Price Section */}
             <div className="text-right flex-shrink-0">
-              <p className="text-lg font-bold text-primary">${subProduct.pricing.usd}</p>
-              <p className="text-xs text-muted-foreground">AED {subProduct.pricing.aed}</p>
+              <CurrencyAED value={subProduct.pricing.aed} className="text-lg font-bold text-primary" />
+              <p className="text-xs text-muted-foreground">${subProduct.pricing.usd} USD</p>
               {subProduct.sizes && subProduct.sizes[0] && (
                 <p className="text-xs text-muted-foreground mt-1">
                   {isRTL() ? 'الحجم' : 'Size'}: {subProduct.sizes[0]}

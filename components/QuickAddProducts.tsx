@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useTranslation } from '@/hooks/use-translation';
 import { featuredProducts } from '@/data/products';
+import { CurrencyAED } from '@/components/CurrencyAED';
 
 interface QuickAddProductsProps {
   onAddProduct: (productId: string) => void;
@@ -47,20 +48,10 @@ export function QuickAddProducts({ onAddProduct, existingProductIds }: QuickAddP
                     {product.name[language]}
                   </h5>
                   <div className="mt-1">
-                    {language === 'en' ? (
-                      <div className="text-xs space-y-1">
-                        <div className="font-medium text-primary">
-                          ${product.pricing.usd} USD
-                        </div>
-                        <div className="text-muted-foreground">
-                          {product.pricing.aed} AED
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="text-sm font-medium text-primary">
-                        {product.pricing.aed} AED
-                      </div>
-                    )}
+                    <div className="text-xs space-y-1">
+                      <CurrencyAED value={product.pricing.aed} className="font-medium text-primary" />
+                      <div className="text-muted-foreground">${product.pricing.usd} USD</div>
+                    </div>
                   </div>
                 </div>
                 
