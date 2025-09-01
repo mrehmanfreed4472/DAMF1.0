@@ -180,12 +180,12 @@ export const OrderSummaryPDF = React.forwardRef<HTMLDivElement, OrderSummaryPDFP
                       <td className="border border-gray-300 px-3 py-2 text-center">{item.selectedSize || '-'}</td>
                       <td className="border border-gray-300 px-3 py-2 text-center">{item.quantity}</td>
                       <td className="border border-gray-300 px-3 py-2 text-center">${item.priceUsd}</td>
-                      <td className="border border-gray-300 px-3 py-2 text-center">{item.priceAed} AED</td>
+                      <td className="border border-gray-300 px-3 py-2 text-center">AED {item.priceAed}</td>
                       <td className="border border-gray-300 px-3 py-2 text-center">
                         {item.laborServices ? (isRTL() ? 'نعم' : 'Yes') : (isRTL() ? 'لا' : 'No')}
                       </td>
                       <td className="border border-gray-300 px-3 py-2 text-center font-medium">${itemTotalUsd.toFixed(2)}</td>
-                      <td className="border border-gray-300 px-3 py-2 text-center font-medium">{itemTotalAed.toFixed(2)} AED</td>
+                      <td className="border border-gray-300 px-3 py-2 text-center font-medium">AED {itemTotalAed.toFixed(2)}</td>
                     </tr>
                   );
                 })}
@@ -209,7 +209,7 @@ export const OrderSummaryPDF = React.forwardRef<HTMLDivElement, OrderSummaryPDFP
             <div>
               <div className="flex justify-between py-2">
                 <span>{isRTL() ? 'المجموع الكلي (AED):' : 'Grand Total (AED):'}</span>
-                <span className="font-bold text-teal-600 text-xl">{totalAed.toFixed(2)} AED</span>
+                <span className="font-bold text-teal-600 text-xl">AED {totalAed.toFixed(2)}</span>
               </div>
             </div>
           </div>

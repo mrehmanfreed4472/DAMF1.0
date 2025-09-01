@@ -114,7 +114,7 @@ export default function OrderSuccess() {
             </div>
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
               <span><strong>Total (AED):</strong></span>
-              <span><strong>${order.total.aed.toFixed(2)} AED</strong></span>
+              <span><strong>$AED {order.total.aed.toFixed(2)}</strong></span>
             </div>
             <div style="border-top: 1px solid #cbd5e0; padding-top: 10px; margin-top: 10px;">
               <div style="display: flex; justify-content: space-between;">
@@ -330,7 +330,7 @@ export default function OrderSuccess() {
                               ${(item.price.usd * item.quantity).toFixed(2)}
                             </p>
                             <p className="text-sm text-muted-foreground">
-                              {(item.price.aed * item.quantity).toFixed(2)} AED
+                              AED {(item.price.aed * item.quantity).toFixed(2)}
                             </p>
                           </div>
                         </div>
@@ -363,7 +363,7 @@ export default function OrderSuccess() {
                     </div>
                     <div className="flex justify-between text-lg">
                       <span>AED:</span>
-                      <span className="font-bold text-primary">{order.total.aed.toFixed(2)} AED</span>
+                      <span className="font-bold text-primary">AED {order.total.aed.toFixed(2)}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -477,7 +477,7 @@ export default function OrderSuccess() {
                   </h4>
                   <p className="text-sm text-muted-foreground">
                     {isRTL() 
-                      ? 'سنقوم بالتسليم وتنفيذ الخدمات حسب الموعد المحدد'
+                      ? 'سنقوم بالتسليم وتنفيذ الخ��مات حسب الموعد المحدد'
                       : 'We will deliver products and execute services as scheduled'
                     }
                   </p>

@@ -359,7 +359,7 @@ export default function AdminOrders() {
                               ${order.total.usd.toLocaleString()}
                             </div>
                             <div className="text-sm text-muted-foreground">
-                              {order.total.aed.toLocaleString()} AED
+                              AED {order.total.aed.toLocaleString()}
                             </div>
                             <div className="text-xs text-muted-foreground">
                               {formatDate(order.createdAt)}
@@ -536,7 +536,7 @@ export default function AdminOrders() {
                             <div className="text-right">
                               <div className="font-medium">Qty: {item.quantity}</div>
                               <div className="text-sm text-muted-foreground">
-                                ${item.price.usd} / {item.price.aed} AED
+                                ${item.price.usd} / AED {item.price.aed}
                               </div>
                               <div className="font-bold text-primary">
                                 ${(item.price.usd * item.quantity).toLocaleString()}

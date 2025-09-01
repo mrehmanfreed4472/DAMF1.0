@@ -753,7 +753,7 @@ export default function Checkout() {
                           <div className="font-medium">
                             {currency === 'USD' 
                               ? `$${(item.price.usd * item.quantity).toFixed(2)}`
-                              : `${(item.price.aed * item.quantity).toFixed(2)} AED`
+                              : `AED ${(item.price.aed * item.quantity).toFixed(2)}`
                             }
                           </div>
                         </div>
@@ -771,7 +771,7 @@ export default function Checkout() {
                     </div>
                     <div className="flex justify-between text-lg font-bold">
                       <span>{isRTL() ? 'المجموع (AED)' : 'Total (AED)'}</span>
-                      <span className="text-primary">{total.aed.toFixed(2)} AED</span>
+                      <span className="text-primary">AED {total.aed.toFixed(2)}</span>
                     </div>
                   </div>
 

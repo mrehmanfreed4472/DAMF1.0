@@ -263,7 +263,7 @@ export default function Services() {
                               ${service.pricing[urgency].usd}
                             </div>
                             <div className="text-xs text-muted-foreground">
-                              {service.pricing[urgency].aed} AED
+                              AED {service.pricing[urgency].aed}
                             </div>
                           </div>
                         </div>

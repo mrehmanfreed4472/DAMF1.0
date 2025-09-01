@@ -47,7 +47,7 @@ export default function AdminDashboard() {
     {
       title: isRTL() ? 'إج��الي الإيرادات' : 'Total Revenue',
       value: `$${totalRevenue.usd.toLocaleString()}`,
-      subtitle: `${totalRevenue.aed.toLocaleString()} AED`,
+      subtitle: `AED ${totalRevenue.aed.toLocaleString()}`,
       icon: DollarSign,
       change: orders.length > 0 ? '+12.5%' : '0%',
       color: 'gradient-success'

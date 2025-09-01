@@ -251,12 +251,12 @@ export default function Cart() {
                               <div className="text-lg font-bold text-primary">
                                 {currency === 'USD' 
                                   ? `$${(item.price.usd * item.quantity).toFixed(2)}`
-                                  : `${(item.price.aed * item.quantity).toFixed(2)} AED`
+                                  : `AED ${(item.price.aed * item.quantity).toFixed(2)}`
                                 }
                               </div>
                               <div className="text-sm text-muted-foreground">
                                 {currency === 'USD' 
-                                  ? `${item.price.aed} AED each`
+                                  ? `AED ${item.price.aed} each`
                                   : `$${item.price.usd} USD each`
                                 }
                               </div>
@@ -326,7 +326,7 @@ export default function Cart() {
                   </div>
                   <div className="flex justify-between text-lg font-bold">
                     <span>{isRTL() ? 'المجموع (AED)' : 'Total (AED)'}</span>
-                    <span className="text-primary">{total.aed.toFixed(2)} AED</span>
+                    <span className="text-primary">AED {total.aed.toFixed(2)}</span>
                   </div>
                 </div>
 

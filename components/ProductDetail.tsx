@@ -76,7 +76,7 @@ export default function ProductDetail() {
     addToCart(cartItem);
 
     toast({
-      title: isRTL() ? 'تم إضافة المنتج' : 'Product Added',
+      title: isRTL() ? 'تم إضافة ال��نتج' : 'Product Added',
       description: isRTL()
         ? 'تم إضافة المنتج إلى السلة بنجاح'
         : 'Product has been added to cart successfully'
@@ -185,11 +185,11 @@ export default function ProductDetail() {
                   </p>
                   <div className="flex items-center gap-4">
                     <span className="text-3xl font-bold text-gray-900">
-                      {currency === 'USD' ? `$${product.pricing.usd}` : `${product.pricing.aed} AED`}
+                      {currency === 'USD' ? `$${product.pricing.usd}` : `AED ${product.pricing.aed}`}
                     </span>
                     {currency === 'USD' && (
                       <span className="text-lg text-gray-500">
-                        ({product.pricing.aed} AED)
+                        (AED {product.pricing.aed})
                       </span>
                     )}
                   </div>
@@ -227,7 +227,7 @@ export default function ProductDetail() {
               {product.sizes && (
                 <div>
                   <Label className="text-base font-medium text-gray-900 mb-3 block">
-                    {isRTL() ? 'اختر الحجم' : 'Select Size'}
+                    {isRTL() ? 'اخت�� الحجم' : 'Select Size'}
                   </Label>
                   <Select value={selectedSize} onValueChange={setSelectedSize}>
                     <SelectTrigger className="h-12">
@@ -280,8 +280,8 @@ export default function ProductDetail() {
                     </Label>
                     <p className="text-sm text-gray-600 mt-1">
                       {isRTL() 
-                        ? `إضافة خدمات العمالة (+${currency === 'USD' ? '$' + laborServicePrice : laborServicePrice + ' AED'})`
-                        : `Professional installation (+${currency === 'USD' ? '$' + laborServicePrice : laborServicePrice + ' AED'})`
+                        ? `إضافة خدمات العمالة (+${currency === 'USD' ? '$' + laborServicePrice : 'AED ' + laborServicePrice})`
+                        : `Professional installation (+${currency === 'USD' ? '$' + laborServicePrice : 'AED ' + laborServicePrice})`
                       }
                     </p>
                   </div>
@@ -300,7 +300,7 @@ export default function ProductDetail() {
                     {isRTL() ? 'سعر المنتج' : 'Product Price'}
                   </span>
                   <span className="font-medium">
-                    {currency === 'USD' ? `$${price}` : `${price} AED`}
+                    {currency === 'USD' ? `$${price}` : `AED ${price}`}
                   </span>
                 </div>
                 
@@ -317,7 +317,7 @@ export default function ProductDetail() {
                       {isRTL() ? 'خدمات العمالة' : 'Labor Services'}
                     </span>
                     <span className="font-medium">
-                      {currency === 'USD' ? `$${laborServicePrice}` : `${laborServicePrice} AED`}
+                      {currency === 'USD' ? `$${laborServicePrice}` : `AED ${laborServicePrice}`}
                     </span>
                   </div>
                 )}
@@ -329,7 +329,7 @@ export default function ProductDetail() {
                     {isRTL() ? 'المجموع' : 'Total'}
                   </span>
                   <span className="text-blue-600">
-                    {currency === 'USD' ? `$${totalPrice}` : `${totalPrice} AED`}
+                    {currency === 'USD' ? `$${totalPrice}` : `AED ${totalPrice}`}
                   </span>
                 </div>
               </div>

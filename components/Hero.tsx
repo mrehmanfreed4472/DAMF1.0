@@ -5,10 +5,41 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Shield, Award, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/hooks/use-translation';
-import { DAMLogo } from '@/components/DAMLogo';
+import useEmblaCarousel from 'embla-carousel-react';
+import { useEffect, useState, useCallback } from 'react';
 
 export function Hero() {
   const { t, isRTL } = useTranslation();
+
+  const slides = [
+    'https://cdn.builder.io/api/v1/image/assets%2F1f92479787d647a5873d822973f760c7%2Fc5d02e0dc2c74859bba425d28e991ddc?format=webp&width=800',
+    'https://cdn.builder.io/api/v1/image/assets%2F1f92479787d647a5873d822973f760c7%2F97373c22686e448c8c3ec74943d0c89c?format=webp&width=800',
+  ];
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const id = setInterval(() => {
+      if (!emblaApi) return;
+      if (emblaApi.canScrollNext()) emblaApi.scrollNext();
+      else emblaApi.scrollTo(0);
+    }, 3500);
+    emblaApi.on('select', onSelect);
+    onSelect();
+    return () => clearInterval(id);
+  }, [emblaApi, onSelect]);
+
+  const scrollTo = useCallback((index: number) => {
+    if (!emblaApi) return;
+    emblaApi.scrollTo(index);
+  }, [emblaApi]);
 
   return (
     <section className="relative bg-gradient-to-br from-slate-50 to-white overflow-hidden">
@@ -125,66 +156,28 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="relative w-full h-72 lg:h-[420px] bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl overflow-hidden shadow-2xl">
-              {/* Professional construction worker image */}
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets%2F71579200f3ac4307afa5688963f86641%2Fef4ad4348a0c4526a0ec6f9f39e56b20?format=webp&width=800"
-                alt="Professional Construction Worker - DAM House of Insulation"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-transparent to-accent/40"></div>
-
-              {/* Company Logo */}
-              <div className="absolute inset-0 flex items-center justify-center hidden">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8, delay: 0.5 }}
-                  className="flex flex-col items-center"
-                >
-                  <DAMLogo size="xl" className="mb-4 drop-shadow-lg" />
-                  <div className="text-4xl lg:text-5xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent">
-                    دم
-                  </div>
-                </motion.div>
+            <div className="relative w-full h-[60vh] sm:h-[64vh] md:h-[70vh] lg:h-[75vh] xl:h-[80vh] rounded-2xl overflow-hidden shadow-2xl">
+              <div className="h-full" ref={emblaRef}>
+                <div className="flex h-full">
+                  {slides.map((src, idx) => (
+                    <div key={idx} className="min-w-0 flex-[0_0_100%] h-full relative">
+                      <img src={src} alt={`Slide ${idx + 1}`} className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-transparent to-accent/40"></div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              {/* Professional info card removed */}
-              <motion.div className="hidden">
-                <div className="bg-white/95 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-                      <Award className="h-4 w-4 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-bold text-primary">
-                        {isRTL() ? 'دار المعازل - شريككم في التميز' : 'Dar Al Muaazil - Your Partner in Excellence'}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {isRTL() ? 'مواد بناء عالية الجودة وحلول العزل المتميزة' : 'Premium Construction Materials & Advanced Insulation Solutions'}
-                      </p>
-                    </div>
-                    <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs px-3 py-1 rounded-full font-medium">
-                      {isRTL() ? 'موثوق' : 'Trusted'}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span>{isRTL() ? '15+ سنة خبرة' : '15+ Years Experience'}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span>{isRTL() ? '500+ مشروع' : '500+ Projects'}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                      <span>{isRTL() ? 'جودة مضمونة' : 'Quality Assured'}</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    aria-label={`Go to slide ${i + 1}`}
+                    onClick={() => scrollTo(i)}
+                    className={`h-2.5 w-2.5 rounded-full ${i === selectedIndex ? 'bg-white/90' : 'bg-white/50 hover:bg-white/70'}`}
+                  />
+                ))}
+              </div>
             </div>
           </motion.div>
         </div>

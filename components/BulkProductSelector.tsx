@@ -199,12 +199,12 @@ export function BulkProductSelector({ onAddProducts, existingProductIds }: BulkP
                               ${product.pricing.usd} USD
                             </div>
                             <div className="text-xs text-muted-foreground">
-                              {product.pricing.aed} AED
+                              AED {product.pricing.aed}
                             </div>
                           </div>
                         ) : (
                           <div className="text-sm font-medium text-primary">
-                            {product.pricing.aed} AED
+                            AED {product.pricing.aed}
                           </div>
                         )}
                       </div>
