@@ -174,16 +174,16 @@ export default function Login() {
               </form>
 
               {/* Demo Credentials */}
-              <div className="mt-6 p-4 bg-muted/50 rounded-lg">
+             {/* <div className="mt-6 p-4 bg-muted/50 rounded-lg">
                 <h4 className="font-semibold mb-2 text-sm">
                   {isRTL() ? 'بيانات تجريبية:' : 'Demo Credentials:'}
                 </h4>
                 
-                {/*<div className="space-y-1 text-xs text-muted-foreground">
+                <div className="space-y-1 text-xs text-muted-foreground">
                   <div><strong>{isRTL() ? 'مدير:' : 'Admin:'}</strong> admin@damgcc.com / admin123</div>
                   <div><strong>{isRTL() ? 'مستخدم:' : 'User:'}</strong> user@damgcc.com / user123</div>
-                </div>*/}
-              </div>
+                </div>
+              </div>*/}
             </CardContent>
           </Card>
         </motion.div>
