@@ -178,10 +178,11 @@ export default function Login() {
                 <h4 className="font-semibold mb-2 text-sm">
                   {isRTL() ? 'بيانات تجريبية:' : 'Demo Credentials:'}
                 </h4>
-                <div className="space-y-1 text-xs text-muted-foreground">
+                
+                {/*<div className="space-y-1 text-xs text-muted-foreground">
                   <div><strong>{isRTL() ? 'مدير:' : 'Admin:'}</strong> admin@damgcc.com / admin123</div>
                   <div><strong>{isRTL() ? 'مستخدم:' : 'User:'}</strong> user@damgcc.com / user123</div>
-                </div>
+                </div>*/}
               </div>
             </CardContent>
           </Card>
