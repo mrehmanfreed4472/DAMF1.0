@@ -2,19 +2,22 @@
 
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { 
-  Search, 
-  Filter, 
-  Grid, 
-  List, 
-  ChevronDown, 
-  ChevronRight, 
-  Package, 
-  Award, 
+  Search,
+  Filter,
+  Grid,
+  List,
+  ChevronDown,
+  ChevronRight,
+  Package,
+  Award,
   Layers,
   ShoppingCart,
   Eye,
-  Star
+  Star,
+  CreditCard
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,7 +27,6 @@ import { Badge } from '@/components/ui/badge';
 import { useTranslation } from '@/hooks/use-translation';
 import { hierarchicalProducts } from '@/data/products-hierarchy';
 import type { MainProduct, SubProduct } from '@/data/products-hierarchy';
-import { productCategories } from '@/data/products';
 import { useCart } from '@/contexts/CartContext';
 import { useAdmin } from '@/contexts/AdminContext';
 import { getTechExplanation, friendlySpec, getInstallationDifficulty, getRecommendedUse } from '@/lib/productTerms';
@@ -37,9 +39,8 @@ interface ExpandedProducts {
 export default function HierarchicalProducts() {
   const { t, language, isRTL } = useTranslation();
   const { addToCart } = useCart();
-  const { getHierarchicalProducts } = useAdmin();
+  const { getHierarchicalProducts, products: adminProducts } = useAdmin();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'name' | 'price-low' | 'price-high'>('name');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [expandedProducts, setExpandedProducts] = useState<ExpandedProducts>({});
@@ -48,23 +49,19 @@ export default function HierarchicalProducts() {
   const hierarchicalProductsData = getHierarchicalProducts();
 
   const filteredProducts = useMemo(() => {
-    let filteredProducts = selectedCategory === 'all'
-      ? hierarchicalProductsData
-      : hierarchicalProductsData.filter(product => product.category === selectedCategory);
+    let filteredProducts = hierarchicalProductsData;
 
-    // Search filter
     if (searchQuery) {
       filteredProducts = filteredProducts.filter(product =>
         product.name[language].toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.description[language].toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.subProducts.some(sub => 
+        product.subProducts.some(sub =>
           sub.name[language].toLowerCase().includes(searchQuery.toLowerCase()) ||
           sub.description[language].toLowerCase().includes(searchQuery.toLowerCase())
         )
       );
     }
 
-    // Sort products
     filteredProducts.sort((a, b) => {
       switch (sortBy) {
         case 'price-low':
@@ -82,7 +79,7 @@ export default function HierarchicalProducts() {
     });
 
     return filteredProducts;
-  }, [selectedCategory, searchQuery, sortBy, language, hierarchicalProductsData]);
+  }, [searchQuery, sortBy, language, hierarchicalProductsData]);
 
   const toggleProductExpansion = (productId: string) => {
     setExpandedProducts(prev => ({
@@ -135,6 +132,76 @@ export default function HierarchicalProducts() {
       }
     }
   };
+
+  // Flatten all sub-products for a simple grid display
+  const flattenedProducts = useMemo(() => {
+    const fromHierarchy = hierarchicalProductsData.flatMap(main =>
+      main.subProducts.map(sub => ({ mainProduct: main, subProduct: sub }))
+    );
+
+    // Include any admin-created sub-products that don't have a parent set
+    const orphanSubs = (adminProducts || [])
+      .filter(p => p && p.isMainProduct === false && !p.parentProductId)
+      .map(p => ({
+        mainProduct: undefined,
+        subProduct: {
+          id: p.id,
+          name: p.name,
+          description: p.description,
+          pricing: p.pricing,
+          specifications: p.specifications || [],
+          sizes: p.sizes || [],
+          image: p.image,
+          availability: (p.availability === 'low_stock' ? 'limited' : p.availability) || 'in_stock'
+        } as SubProduct,
+      }));
+
+    // Also include main products that have no sub-products defined yet (treat them as standalone items)
+    const mainWithNoChildren = (adminProducts || [])
+      .filter(p => p && p.isMainProduct === true)
+      .filter(main => !(adminProducts || []).some(sp => sp && sp.isMainProduct === false && sp.parentProductId === main.id))
+      .map(main => ({
+        mainProduct: undefined,
+        subProduct: {
+          id: main.id,
+          name: main.name,
+          description: main.description,
+          pricing: main.pricing,
+          specifications: main.specifications || [],
+          sizes: main.sizes || [],
+          image: main.image,
+          availability: (main.availability === 'low_stock' ? 'limited' : main.availability) || 'in_stock'
+        } as SubProduct,
+      }));
+
+    return [...fromHierarchy, ...orphanSubs, ...mainWithNoChildren];
+  }, [hierarchicalProductsData, adminProducts]);
+
+  const filteredSubProducts = useMemo(() => {
+    let list = flattenedProducts;
+
+    if (searchQuery) {
+      list = list.filter(({ subProduct, mainProduct }) =>
+        subProduct.name[language].toLowerCase().includes(searchQuery.toLowerCase()) ||
+        subProduct.description[language].toLowerCase().includes(searchQuery.toLowerCase()) ||
+        ((mainProduct?.name?.[language] || '').toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    }
+
+    list = [...list].sort((a, b) => {
+      switch (sortBy) {
+        case 'price-low':
+          return a.subProduct.pricing.usd - b.subProduct.pricing.usd;
+        case 'price-high':
+          return b.subProduct.pricing.usd - a.subProduct.pricing.usd;
+        case 'name':
+        default:
+          return a.subProduct.name[language].localeCompare(b.subProduct.name[language]);
+      }
+    });
+
+    return list;
+  }, [flattenedProducts, searchQuery, sortBy, language]);
 
   const MainProductCard = ({ product }: { product: MainProduct }) => {
     const isExpanded = expandedProducts[product.id];
@@ -300,115 +367,46 @@ export default function HierarchicalProducts() {
     );
   };
 
-  const SubProductCard = ({ subProduct, mainProduct }: { subProduct: SubProduct; mainProduct: MainProduct }) => {
-    const difficulty = getInstallationDifficulty(subProduct.specifications);
-    const recommendedUse = getRecommendedUse(mainProduct.applications[language], language);
+  const SimpleSubProductCard = ({ subProduct, mainProduct }: { subProduct: SubProduct; mainProduct?: MainProduct }) => {
+    const router = useRouter();
+
+    const add = () => {
+      addToCart({
+        type: 'product',
+        id: subProduct.id,
+        name: subProduct.name[language],
+        price: subProduct.pricing,
+        image: subProduct.image
+      });
+    };
+
+    const buyNow = () => {
+      add();
+      router.push('/checkout');
+    };
 
     return (
-      <Card className="border border-border/20 bg-background/50 hover:bg-background/80 transition-all duration-200">
-        <CardContent className="p-4">
-          <div className="flex gap-3 mb-3">
-            {/* Product Image */}
-            <div className="flex-shrink-0">
-              <div className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden border border-border/20">
-                <img
-                  src={subProduct.image}
-                  alt={subProduct.name[language]}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = '/placeholder.svg';
-                  }}
-                />
-              </div>
-            </div>
-            
-            {/* Product Info */}
-            <div className="flex-1 min-w-0">
-              <h5 className="font-semibold text-sm text-foreground mb-1">
-                {subProduct.name[language]}
-              </h5>
-              <p className="text-xs text-muted-foreground mb-2 line-clamp-2">
-                {subProduct.description[language]}
-              </p>
-
-              {/* User-friendly info */}
-              <div className="flex items-center gap-2 mb-2 flex-wrap">
-                <Badge
-                  variant={subProduct.availability === 'in_stock' ? 'default' : 'secondary'}
-                  className="text-xs"
-                >
-                  {subProduct.availability === 'in_stock'
-                    ? (isRTL() ? 'متوفر' : 'In Stock')
-                    : (isRTL() ? 'غير متوفر' : 'Out of Stock')
-                  }
-                </Badge>
-
-                <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
-                  {difficulty.label[language]}
-                </Badge>
-
-                {recommendedUse.length > 0 && (
-                  <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                    {isRTL() ? 'مناسب للـ' : 'Good for'}: {recommendedUse[0]}
-                  </Badge>
-                )}
-              </div>
-            </div>
-            
-            {/* Price Section */}
-            <div className="text-right flex-shrink-0">
-              <CurrencyAED value={subProduct.pricing.aed} className="text-lg font-bold text-primary" />
-              <p className="text-xs text-muted-foreground">${subProduct.pricing.usd} USD</p>
-              {subProduct.sizes && subProduct.sizes[0] && (
-                <p className="text-xs text-muted-foreground mt-1">
-                  {isRTL() ? 'الحجم' : 'Size'}: {subProduct.sizes[0]}
-                </p>
-              )}
-            </div>
+      <Card className="overflow-hidden border border-border/20">
+        <Link href={`/products/${subProduct.id}`} className="block">
+          <div className="aspect-[4/3] bg-gray-100">
+            <img src={subProduct.image} alt={subProduct.name[language]} className="w-full h-full object-cover" />
           </div>
-
-          {/* User-friendly specifications */}
-          <div className="mb-3">
-            <div className="flex flex-wrap gap-1">
-              {subProduct.specifications.slice(0, 2).map((spec, index) => {
-                const explanation = getTechExplanation(spec, language);
-                const friendlySpecText = friendlySpec(spec, language);
-
-                return (
-                  <Badge
-                    key={index}
-                    variant="outline"
-                    className="text-xs cursor-help"
-                    title={explanation || undefined}
-                  >
-                    {friendlySpecText}
-                  </Badge>
-                );
-              })}
-            </div>
+        </Link>
+        <CardContent className="p-4 space-y-3">
+          <div>
+            <h3 className="font-semibold text-foreground line-clamp-1">{subProduct.name[language]}</h3>
+            <p className="text-xs text-muted-foreground line-clamp-2">{subProduct.description[language]}</p>
           </div>
-
-          {/* Actions */}
+          <div>
+            <CurrencyAED value={subProduct.pricing.aed} className="text-lg font-bold text-primary" />
+            <p className="text-xs text-muted-foreground">${subProduct.pricing.usd} USD</p>
+          </div>
           <div className="flex gap-2">
-            <Button
-              size="sm"
-              variant="outline"
-              className="flex-1 text-xs"
-              onClick={() => handleAddToCart(subProduct, mainProduct)}
-              disabled={subProduct.availability !== 'in_stock'}
-            >
-              <ShoppingCart className="h-3 w-3 mr-1" />
-              {isRTL() ? 'أضف للسلة' : 'Add to Cart'}
+            <Button size="sm" className="flex-1" onClick={add} disabled={subProduct.availability !== 'in_stock'}>
+              <ShoppingCart className="h-4 w-4 mr-2" />{isRTL() ? 'أضف للسلة' : 'Add to Cart'}
             </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              className="px-3"
-              aria-label={isRTL() ? 'عرض التفاصيل' : 'View details'}
-              title={isRTL() ? 'عرض التفاصيل' : 'View details'}
-            >
-              <Eye className="h-3 w-3" />
+            <Button size="sm" variant="outline" className="flex-1" onClick={buyNow} disabled={subProduct.availability !== 'in_stock'}>
+              <CreditCard className="h-4 w-4 mr-2" />{isRTL() ? 'اشتري الآن' : 'Buy Now'}
             </Button>
           </div>
         </CardContent>
@@ -452,35 +450,17 @@ export default function HierarchicalProducts() {
           </h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
-                placeholder={isRTL() ? 'البحث في المنتجات والفئ��ت...' : 'Search products and categories...'}
+                placeholder={isRTL() ? 'البحث في المنتجات...' : 'Search products...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
               />
             </div>
-
-            {/* Category Filter */}
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger>
-                <Filter className="h-4 w-4 mr-2" />
-                <SelectValue placeholder={isRTL() ? 'اختر الفئة' : 'Select Category'} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">
-                  {isRTL() ? 'جميع الفئات' : 'All Categories'}
-                </SelectItem>
-                {productCategories.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
-                    {category.name[language]}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
 
             {/* Sort */}
             <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
@@ -527,8 +507,8 @@ export default function HierarchicalProducts() {
           <div className="mt-4 text-sm text-muted-foreground flex items-center gap-2">
             <Package className="h-4 w-4" />
             {isRTL()
-              ? `عرض ${filteredProducts.length} من ${hierarchicalProductsData.length} خط منتج`
-              : `Showing ${filteredProducts.length} of ${hierarchicalProductsData.length} product lines`
+              ? `عرض ${filteredSubProducts.length} من ${flattenedProducts.length} منتج`
+              : `Showing ${filteredSubProducts.length} of ${flattenedProducts.length} products`
             }
           </div>
         </motion.div>
@@ -538,10 +518,10 @@ export default function HierarchicalProducts() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="space-y-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
         >
-          {filteredProducts.map((product) => (
-            <MainProductCard key={product.id} product={product} />
+          {filteredSubProducts.map(({ subProduct, mainProduct }) => (
+            <SimpleSubProductCard key={subProduct.id} subProduct={subProduct} mainProduct={mainProduct} />
           ))}
         </motion.div>
 

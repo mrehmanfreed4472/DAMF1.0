@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Package, 
@@ -61,6 +62,415 @@ interface ProductFormData {
   applications?: string[];
   features?: string[];
 }
+
+type ProductFormFieldsProps = {
+  formData: ProductFormData;
+  setFormData: React.Dispatch<React.SetStateAction<ProductFormData>>;
+  products: Product[];
+};
+
+const ProductFormFields: React.FC<ProductFormFieldsProps> = ({ formData, setFormData, products }) => {
+  const addSpecification = () => {
+    setFormData(prev => ({ ...prev, specifications: [...(prev.specifications || []), ''] }));
+  };
+  const updateSpecification = (index: number, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      specifications: prev.specifications?.map((spec, i) => (i === index ? value : spec)) || [],
+    }));
+  };
+  const removeSpecification = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      specifications: prev.specifications?.filter((_, i) => i !== index) || [],
+    }));
+  };
+
+  const addSize = () => {
+    setFormData(prev => ({ ...prev, sizes: [...(prev.sizes || []), ''] }));
+  };
+  const updateSize = (index: number, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      sizes: prev.sizes?.map((size, i) => (i === index ? value : size)) || [],
+    }));
+  };
+  const removeSize = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      sizes: prev.sizes?.filter((_, i) => i !== index) || [],
+    }));
+  };
+
+  const addApplication = () => {
+    setFormData(prev => ({ ...prev, applications: [...(prev.applications || []), ''] }));
+  };
+  const updateApplication = (index: number, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      applications: prev.applications?.map((app, i) => (i === index ? value : app)) || [],
+    }));
+  };
+  const removeApplication = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      applications: prev.applications?.filter((_, i) => i !== index) || [],
+    }));
+  };
+
+  const addFeature = () => {
+    setFormData(prev => ({ ...prev, features: [...(prev.features || []), ''] }));
+  };
+  const updateFeature = (index: number, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      features: prev.features?.map((feature, i) => (i === index ? value : feature)) || [],
+    }));
+  };
+  const removeFeature = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      features: prev.features?.filter((_, i) => i !== index) || [],
+    }));
+  };
+
+  return (
+    <div className="space-y-6">
+      <Tabs defaultValue="basic" className="w-full">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="basic">Basic Info</TabsTrigger>
+          <TabsTrigger value="pricing">Pricing & Stock</TabsTrigger>
+          <TabsTrigger value="details">Details</TabsTrigger>
+          <TabsTrigger value="hierarchy">Structure</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="basic" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="nameEn">Product Name (English) *</Label>
+              <Input
+                id="nameEn"
+                value={formData.name.en}
+                onChange={(e) =>
+                  setFormData(prev => ({ ...prev, name: { ...prev.name, en: e.target.value } }))
+                }
+                placeholder="Enter product name in English"
+              />
+            </div>
+            <div>
+              <Label htmlFor="nameAr">Product Name (Arabic)</Label>
+              <Input
+                id="nameAr"
+                value={formData.name.ar}
+                onChange={(e) =>
+                  setFormData(prev => ({ ...prev, name: { ...prev.name, ar: e.target.value } }))
+                }
+                placeholder="Enter product name in Arabic"
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="category">Category *</Label>
+            <Select
+              value={formData.category}
+              onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                {productCategories.map((category) => (
+                  <SelectItem key={category.id} value={category.id}>
+                    {category.name.en}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="descEn">Description (English)</Label>
+              <Textarea
+                id="descEn"
+                value={formData.description.en}
+                onChange={(e) =>
+                  setFormData(prev => ({
+                    ...prev,
+                    description: { ...prev.description, en: e.target.value },
+                  }))
+                }
+                placeholder="Enter product description in English"
+                rows={3}
+              />
+            </div>
+            <div>
+              <Label htmlFor="descAr">Description (Arabic)</Label>
+              <Textarea
+                id="descAr"
+                value={formData.description.ar}
+                onChange={(e) =>
+                  setFormData(prev => ({
+                    ...prev,
+                    description: { ...prev.description, ar: e.target.value },
+                  }))
+                }
+                placeholder="Enter product description in Arabic"
+                rows={3}
+              />
+            </div>
+          </div>
+
+          <ImageUpload
+            value={formData.image}
+            onChange={(value) => setFormData(prev => ({ ...prev, image: value }))}
+            label="Product Image"
+            placeholder="Upload product image or enter URL"
+          />
+        </TabsContent>
+
+        <TabsContent value="pricing" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="priceUsd">Price (USD) *</Label>
+              <Input
+                id="priceUsd"
+                type="number"
+                value={formData.pricing.usd}
+                onChange={(e) =>
+                  setFormData(prev => ({
+                    ...prev,
+                    pricing: { ...prev.pricing, usd: parseFloat(e.target.value) || 0 },
+                  }))
+                }
+                placeholder="0.00"
+              />
+            </div>
+            <div>
+              <Label htmlFor="priceAed">Price (AED) *</Label>
+              <Input
+                id="priceAed"
+                type="number"
+                value={formData.pricing.aed}
+                onChange={(e) =>
+                  setFormData(prev => ({
+                    ...prev,
+                    pricing: { ...prev.pricing, aed: parseFloat(e.target.value) || 0 },
+                  }))
+                }
+                placeholder="0.00"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="stockQuantity">Stock Quantity</Label>
+              <Input
+                id="stockQuantity"
+                type="number"
+                value={formData.stockQuantity}
+                onChange={(e) =>
+                  setFormData(prev => ({ ...prev, stockQuantity: parseInt(e.target.value) || 0 }))
+                }
+                placeholder="0"
+              />
+            </div>
+            <div>
+              <Label htmlFor="minStockLevel">Minimum Stock Level</Label>
+              <Input
+                id="minStockLevel"
+                type="number"
+                value={formData.minStockLevel}
+                onChange={(e) =>
+                  setFormData(prev => ({ ...prev, minStockLevel: parseInt(e.target.value) || 10 }))
+                }
+                placeholder="10"
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="availability">Availability Status</Label>
+            <Select
+              value={formData.availability}
+              onValueChange={(value: 'in_stock' | 'low_stock' | 'out_of_stock') =>
+                setFormData(prev => ({ ...prev, availability: value }))
+              }
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="in_stock">In Stock</SelectItem>
+                <SelectItem value="low_stock">Low Stock</SelectItem>
+                <SelectItem value="limited">Limited Stock</SelectItem>
+                <SelectItem value="out_of_stock">Out of Stock</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="featured"
+              checked={formData.featured}
+              onCheckedChange={(checked) => setFormData(prev => ({ ...prev, featured: checked }))}
+            />
+            <Label htmlFor="featured">Featured Product</Label>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="details" className="space-y-4">
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <Label>Specifications</Label>
+              <Button variant="outline" size="sm" onClick={addSpecification}>
+                <Plus className="h-4 w-4 mr-1" />
+                Add Spec
+              </Button>
+            </div>
+            <div className="space-y-2">
+              {formData.specifications?.map((spec, index) => (
+                <div key={index} className="flex gap-2">
+                  <Input
+                    value={spec}
+                    onChange={(e) => updateSpecification(index, e.target.value)}
+                    placeholder="Enter specification"
+                  />
+                  <Button variant="outline" size="sm" onClick={() => removeSpecification(index)}>
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <Label>Available Sizes</Label>
+              <Button variant="outline" size="sm" onClick={addSize}>
+                <Plus className="h-4 w-4 mr-1" />
+                Add Size
+              </Button>
+            </div>
+            <div className="space-y-2">
+              {formData.sizes?.map((size, index) => (
+                <div key={index} className="flex gap-2">
+                  <Input
+                    value={size}
+                    onChange={(e) => updateSize(index, e.target.value)}
+                    placeholder="Enter size"
+                  />
+                  <Button variant="outline" size="sm" onClick={() => removeSize(index)}>
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="hierarchy" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="isMainProduct">Product Type</Label>
+              <Select
+                value={formData.isMainProduct ? 'main' : 'sub'}
+                onValueChange={(value) =>
+                  setFormData(prev => ({ ...prev, isMainProduct: value === 'main' }))
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select product type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="main">Main Product (Product Line)</SelectItem>
+                  <SelectItem value="sub">Sub Product (Variant)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {!formData.isMainProduct && (
+              <div>
+                <Label htmlFor="parentProductId">Parent Product</Label>
+                <Select
+                  value={formData.parentProductId || ''}
+                  onValueChange={(value) =>
+                    setFormData(prev => ({ ...prev, parentProductId: value || undefined }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select parent product" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {products.filter(p => p.isMainProduct).map((product) => (
+                      <SelectItem key={product.id} value={product.id}>
+                        {product.name.en}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+          </div>
+
+          {formData.isMainProduct && (
+            <>
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <Label>Applications</Label>
+                  <Button variant="outline" size="sm" onClick={addApplication}>
+                    <Plus className="h-4 w-4 mr-1" />
+                    Add Application
+                  </Button>
+                </div>
+                <div className="space-y-2">
+                  {formData.applications?.map((app, index) => (
+                    <div key={index} className="flex gap-2">
+                      <Input
+                        value={app}
+                        onChange={(e) => updateApplication(index, e.target.value)}
+                        placeholder="Enter application"
+                      />
+                      <Button variant="outline" size="sm" onClick={() => removeApplication(index)}>
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <Label>Features</Label>
+                  <Button variant="outline" size="sm" onClick={addFeature}>
+                    <Plus className="h-4 w-4 mr-1" />
+                    Add Feature
+                  </Button>
+                </div>
+                <div className="space-y-2">
+                  {formData.features?.map((feature, index) => (
+                    <div key={index} className="flex gap-2">
+                      <Input
+                        value={feature}
+                        onChange={(e) => updateFeature(index, e.target.value)}
+                        placeholder="Enter feature"
+                      />
+                      <Button variant="outline" size="sm" onClick={() => removeFeature(index)}>
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+};
 
 export default function AdminProducts() {
   const { isRTL } = useTranslation();
@@ -333,354 +743,6 @@ export default function AdminProducts() {
     avgPrice: products.length > 0 ? Math.round(products.reduce((sum, p) => sum + p.pricing.usd, 0) / products.length) : 0
   };
 
-  const ProductFormFields = () => (
-    <div className="space-y-6">
-      <Tabs defaultValue="basic" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="basic">Basic Info</TabsTrigger>
-          <TabsTrigger value="pricing">Pricing & Stock</TabsTrigger>
-          <TabsTrigger value="details">Details</TabsTrigger>
-          <TabsTrigger value="hierarchy">Structure</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="basic" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="nameEn">Product Name (English) *</Label>
-              <Input
-                id="nameEn"
-                value={formData.name.en}
-                onChange={(e) => setFormData(prev => ({
-                  ...prev,
-                  name: { ...prev.name, en: e.target.value }
-                }))}
-                placeholder="Enter product name in English"
-              />
-            </div>
-            <div>
-              <Label htmlFor="nameAr">Product Name (Arabic)</Label>
-              <Input
-                id="nameAr"
-                value={formData.name.ar}
-                onChange={(e) => setFormData(prev => ({
-                  ...prev,
-                  name: { ...prev.name, ar: e.target.value }
-                }))}
-                placeholder="Enter product name in Arabic"
-              />
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="category">Category *</Label>
-            <Select 
-              value={formData.category} 
-              onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                {productCategories.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
-                    {category.name.en}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="descEn">Description (English)</Label>
-              <Textarea
-                id="descEn"
-                value={formData.description.en}
-                onChange={(e) => setFormData(prev => ({
-                  ...prev,
-                  description: { ...prev.description, en: e.target.value }
-                }))}
-                placeholder="Enter product description in English"
-                rows={3}
-              />
-            </div>
-            <div>
-              <Label htmlFor="descAr">Description (Arabic)</Label>
-              <Textarea
-                id="descAr"
-                value={formData.description.ar}
-                onChange={(e) => setFormData(prev => ({
-                  ...prev,
-                  description: { ...prev.description, ar: e.target.value }
-                }))}
-                placeholder="Enter product description in Arabic"
-                rows={3}
-              />
-            </div>
-          </div>
-
-          <ImageUpload
-            value={formData.image}
-            onChange={(value) => setFormData(prev => ({ ...prev, image: value }))}
-            label="Product Image"
-            placeholder="Upload product image or enter URL"
-          />
-        </TabsContent>
-
-        <TabsContent value="pricing" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="priceUsd">Price (USD) *</Label>
-              <Input
-                id="priceUsd"
-                type="number"
-                value={formData.pricing.usd}
-                onChange={(e) => setFormData(prev => ({
-                  ...prev,
-                  pricing: { ...prev.pricing, usd: parseFloat(e.target.value) || 0 }
-                }))}
-                placeholder="0.00"
-              />
-            </div>
-            <div>
-              <Label htmlFor="priceAed">Price (AED) *</Label>
-              <Input
-                id="priceAed"
-                type="number"
-                value={formData.pricing.aed}
-                onChange={(e) => setFormData(prev => ({
-                  ...prev,
-                  pricing: { ...prev.pricing, aed: parseFloat(e.target.value) || 0 }
-                }))}
-                placeholder="0.00"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="stockQuantity">Stock Quantity</Label>
-              <Input
-                id="stockQuantity"
-                type="number"
-                value={formData.stockQuantity}
-                onChange={(e) => setFormData(prev => ({ 
-                  ...prev, 
-                  stockQuantity: parseInt(e.target.value) || 0 
-                }))}
-                placeholder="0"
-              />
-            </div>
-            <div>
-              <Label htmlFor="minStockLevel">Minimum Stock Level</Label>
-              <Input
-                id="minStockLevel"
-                type="number"
-                value={formData.minStockLevel}
-                onChange={(e) => setFormData(prev => ({ 
-                  ...prev, 
-                  minStockLevel: parseInt(e.target.value) || 10 
-                }))}
-                placeholder="10"
-              />
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="availability">Availability Status</Label>
-            <Select 
-              value={formData.availability} 
-              onValueChange={(value: 'in_stock' | 'low_stock' | 'out_of_stock') => setFormData(prev => ({ ...prev, availability: value }))}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="in_stock">In Stock</SelectItem>
-                <SelectItem value="low_stock">Low Stock</SelectItem>
-                <SelectItem value="limited">Limited Stock</SelectItem>
-                <SelectItem value="out_of_stock">Out of Stock</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="featured"
-              checked={formData.featured}
-              onCheckedChange={(checked) => setFormData(prev => ({ ...prev, featured: checked }))}
-            />
-            <Label htmlFor="featured">Featured Product</Label>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="details" className="space-y-4">
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <Label>Specifications</Label>
-              <Button variant="outline" size="sm" onClick={addSpecification}>
-                <Plus className="h-4 w-4 mr-1" />
-                Add Spec
-              </Button>
-            </div>
-            <div className="space-y-2">
-              {formData.specifications?.map((spec, index) => (
-                <div key={index} className="flex gap-2">
-                  <Input
-                    value={spec}
-                    onChange={(e) => updateSpecification(index, e.target.value)}
-                    placeholder="Enter specification"
-                  />
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => removeSpecification(index)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <Label>Available Sizes</Label>
-              <Button variant="outline" size="sm" onClick={addSize}>
-                <Plus className="h-4 w-4 mr-1" />
-                Add Size
-              </Button>
-            </div>
-            <div className="space-y-2">
-              {formData.sizes?.map((size, index) => (
-                <div key={index} className="flex gap-2">
-                  <Input
-                    value={size}
-                    onChange={(e) => updateSize(index, e.target.value)}
-                    placeholder="Enter size"
-                  />
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => removeSize(index)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="hierarchy" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="isMainProduct">Product Type</Label>
-              <Select
-                value={formData.isMainProduct ? 'main' : 'sub'}
-                onValueChange={(value) => setFormData(prev => ({
-                  ...prev,
-                  isMainProduct: value === 'main'
-                }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select product type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="main">Main Product (Product Line)</SelectItem>
-                  <SelectItem value="sub">Sub Product (Variant)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {!formData.isMainProduct && (
-              <div>
-                <Label htmlFor="parentProductId">Parent Product</Label>
-                <Select
-                  value={formData.parentProductId || ''}
-                  onValueChange={(value) => setFormData(prev => ({
-                    ...prev,
-                    parentProductId: value || undefined
-                  }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select parent product" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {products.filter(p => p.isMainProduct).map((product) => (
-                      <SelectItem key={product.id} value={product.id}>
-                        {product.name.en}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-          </div>
-
-          {formData.isMainProduct && (
-            <>
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label>Applications</Label>
-                  <Button variant="outline" size="sm" onClick={addApplication}>
-                    <Plus className="h-4 w-4 mr-1" />
-                    Add Application
-                  </Button>
-                </div>
-                <div className="space-y-2">
-                  {formData.applications?.map((app, index) => (
-                    <div key={index} className="flex gap-2">
-                      <Input
-                        value={app}
-                        onChange={(e) => updateApplication(index, e.target.value)}
-                        placeholder="Enter application"
-                      />
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => removeApplication(index)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label>Features</Label>
-                  <Button variant="outline" size="sm" onClick={addFeature}>
-                    <Plus className="h-4 w-4 mr-1" />
-                    Add Feature
-                  </Button>
-                </div>
-                <div className="space-y-2">
-                  {formData.features?.map((feature, index) => (
-                    <div key={index} className="flex gap-2">
-                      <Input
-                        value={feature}
-                        onChange={(e) => updateFeature(index, e.target.value)}
-                        placeholder="Enter feature"
-                      />
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => removeFeature(index)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </>
-          )}
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
 
   return (
     <div className="p-6 space-y-6">
@@ -963,7 +1025,7 @@ export default function AdminProducts() {
               </DialogDescription>
             </DialogHeader>
 
-            <ProductFormFields />
+            <ProductFormFields formData={formData} setFormData={setFormData} products={products} />
 
             <div className="flex justify-end gap-3">
               <Button variant="outline" onClick={() => setIsAddModalOpen(false)}>
@@ -990,7 +1052,7 @@ export default function AdminProducts() {
               </DialogDescription>
             </DialogHeader>
 
-            <ProductFormFields />
+            <ProductFormFields formData={formData} setFormData={setFormData} products={products} />
 
             <div className="flex justify-end gap-3">
               <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>

@@ -8,7 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { CurrencyAED } from '@/components/CurrencyAED';
 import { useTranslation } from '@/hooks/use-translation';
-import { featuredProducts } from '@/data/products';
+import { featuredProducts as staticFeatured } from '@/data/products';
+import { useAdmin } from '@/contexts/AdminContext';
 
 export function FeaturedProducts() {
   const { t, language, getCurrency, isRTL } = useTranslation();
@@ -34,6 +35,10 @@ export function FeaturedProducts() {
     }
   };
 
+  const { products: adminProducts } = useAdmin();
+  const displayFeatured = (adminProducts && adminProducts.length > 0)
+    ? adminProducts.filter(p => p.featured)
+    : staticFeatured;
   const currency = getCurrency();
 
   return (
@@ -64,7 +69,7 @@ export function FeaturedProducts() {
           viewport={{ once: true }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          {featuredProducts.map((product) => (
+          {displayFeatured.map((product) => (
             <motion.div
               key={product.id}
               variants={itemVariants}

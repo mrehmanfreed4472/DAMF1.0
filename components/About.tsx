@@ -176,7 +176,7 @@ export function About() {
               </p>
               <p>
                 {isRTL() 
-                  ? 'بدأنا رحلتنا من الشارقة ونمونا لنصبح واحدة من الموردين الموثوقين في هذا المجال، حيث نخدم العملاء في جميع أنحاء دولة الإمارات.'
+                  ? 'بدأنا رحلتنا من الشارقة ونمونا لنصبح واحدة من الموردين الموثوقين في هذا ا��مجال، حيث نخدم العملاء في جميع أنحاء دولة الإمارات.'
                   : 'We started our journey from Sharjah and grew to become one of the trusted suppliers in this field, serving customers throughout the UAE.'
                 }
               </p>
@@ -199,18 +199,17 @@ export function About() {
               </Badge>
             </div>
           </div>
-          <div className="relative">
-            <div className="w-full h-96 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-6xl font-bold text-primary/30">
-                  دم
-                </div>
-              </div>
-              <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-sm rounded-lg p-4">
-                <p className="text-sm font-medium text-foreground">
-                  {isRTL() ? 'مقرنا الرئيسي في مركز شمس التجاري، الشارقة' : 'Our headquarters at Shams Business Center, Sharjah'}
-                </p>
-              </div>
+          <div className="relative w-full h-96 rounded-2xl overflow-hidden">
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2Fbe317009bb644e719e7cd7d209bca9da%2Fefdab4af870947038ee3a4a1b0dc1a58?format=webp&width=800"
+              alt={isRTL() ? 'عامل إنشاءات مع أفق المدينة' : 'Construction worker with city skyline'}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20"></div>
+            <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-sm rounded-lg p-4">
+              <p className="text-sm font-medium text-foreground">
+                {isRTL() ? 'مقرنا الرئيسي في مركز شمس التجاري، الشارقة' : 'Our headquarters at Shams Business Center, Sharjah'}
+              </p>
             </div>
           </div>
         </motion.div>
