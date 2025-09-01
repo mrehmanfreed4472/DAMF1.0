@@ -19,13 +19,13 @@ export function Hero() {
       </div>
 
       <div className="container mx-auto px-4 py-20 lg:py-32 relative">
-        <div className="grid grid-cols-1 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: isRTL() ? 50 : -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="hidden"
+            className="text-left"
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -38,10 +38,11 @@ export function Hero() {
             </motion.div>
 
             <motion.h1
+              suppressHydrationWarning
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight"
+              className="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-tight"
             >
               {t('hero.title')}
             </motion.h1>
@@ -124,7 +125,7 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="relative w-full h-96 lg:h-[500px] bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative w-full h-72 lg:h-[420px] bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl overflow-hidden shadow-2xl">
               {/* Professional construction worker image */}
               <img
                 src="https://cdn.builder.io/api/v1/image/assets%2F71579200f3ac4307afa5688963f86641%2Fef4ad4348a0c4526a0ec6f9f39e56b20?format=webp&width=800"
@@ -148,13 +149,8 @@ export function Hero() {
                 </motion.div>
               </div>
 
-              {/* Professional info card */}
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
-                className="absolute bottom-6 left-6 right-6 hidden"
-              >
+              {/* Professional info card removed */}
+              <motion.div className="hidden">
                 <div className="bg-white/95 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">

@@ -74,6 +74,7 @@ export function HeaderEnhanced() {
           {/* Logo */}
           <DAMLogo
             size="lg"
+            className="ml-3 md:ml-6 my-1"
             href="/"
           />
 

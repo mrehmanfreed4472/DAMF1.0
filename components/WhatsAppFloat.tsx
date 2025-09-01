@@ -14,7 +14,7 @@ export function WhatsAppFloat() {
   // WhatsApp business number (replace with actual number)
   const whatsappNumber = "+971501234567" // Replace with actual DAM WhatsApp number
   const defaultMessage = isRTL() 
-    ? "مرح��اً، أرغب في الاستفسار عن منتجاتكم وخدماتكم."
+    ? "مرحباً، أرغب في الاستفسار عن منتجاتكم وخدماتكم."
     : "Hello, I would like to inquire about your products and services."
 
   const openWhatsApp = (customMessage?: string) => {
@@ -229,25 +229,7 @@ export function WhatsAppFloat() {
           />
         </motion.div>
 
-        {/* Tooltip */}
-        {!isOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: isRTL() ? 10 : -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            className={`absolute top-1/2 -translate-y-1/2 ${
-              isRTL() 
-                ? 'right-16 text-right'
-                : 'left-16 text-left'
-            }`}
-          >
-            <div className="bg-gray-900 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap shadow-lg">
-              {isRTL() ? 'تحدث معنا' : 'Chat with us'}
-              <div className={`absolute top-1/2 -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45 ${
-                isRTL() ? '-left-1' : '-right-1'
-              }`} />
-            </div>
-          </motion.div>
-        )}
+        {/* Tooltip removed per request */}
       </motion.div>
     </>
   )
