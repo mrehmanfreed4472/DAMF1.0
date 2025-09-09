@@ -1,4 +1,7 @@
+'use client'
+
 import { useState } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Crown, 
@@ -207,7 +210,7 @@ export default function AdminServices() {
   const handleDeleteService = (serviceId: string, serviceName: string) => {
     deleteService(serviceId);
     toast({
-      title: isRTL() ? 'تم حذ�� الخدمة' : 'Service Deleted',
+      title: isRTL() ? 'تم حذ�� الخدم��' : 'Service Deleted',
       description: `${serviceName} has been deleted successfully`
     });
   };

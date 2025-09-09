@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CreditCard, MapPin, User, Phone, Mail, Shield, Crown, CheckCircle, ArrowLeft, Package, Calendar } from 'lucide-react';
@@ -590,7 +592,7 @@ export default function Checkout() {
                         </div>
                         <div>
                           <Label htmlFor="cardholderName">
-                            {isRTL() ? 'اسم حامل البطاقة' : 'Cardholder Name'} *
+                            {isRTL() ? 'اسم حامل البطاق��' : 'Cardholder Name'} *
                           </Label>
                           <Input
                             id="cardholderName"

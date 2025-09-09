@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingCart, MessageCircle, Mail, Plus, Minus, Trash2, Calculator, Package, User, Phone, Download, FileText, Star, Zap, Crown, Shield, Award, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
@@ -315,7 +317,7 @@ export default function Order() {
     message += `📅 ${isRTL() ? 'التاريخ' : 'Date'}: ${currentDate}\n\n`;
 
     message += `*👤 ${isRTL() ? 'معلومات العميل' : 'CUSTOMER INFORMATION'}:*\n`;
-    message += `• ${isRTL() ? 'الاسم' : 'Name'}: ${orderForm.customerName}\n`;
+    message += `• ${isRTL() ? 'الا��م' : 'Name'}: ${orderForm.customerName}\n`;
     if (orderForm.company) message += `• ${isRTL() ? 'الشركة' : 'Company'}: ${orderForm.company}\n`;
     message += `• ${isRTL() ? 'البريد الإلكتروني' : 'Email'}: ${orderForm.email}\n`;
     message += `• ${isRTL() ? 'رقم الواتساب' : 'WhatsApp'}: ${orderForm.whatsappNumber}\n`;
@@ -353,7 +355,7 @@ export default function Order() {
 
     message += `*📄 ${isRTL() ? 'ملف PDF مفصل' : 'DETAILED PDF ATTACHMENT'}:*\n`;
     message += `${isRTL()
-      ? '📎 ملف PDF شامل لتفاصيل الطلب تم تحميله تلقائ��اً على جهازك\n🔗 يرج�� إرفاق الملف المحمل مع هذه الرسالة'
+      ? '📎 ملف PDF شامل لتفاصيل الط��ب تم تحميله تلقائ��اً على جهازك\n🔗 يرج�� إرفاق الملف المحمل مع هذه الرسالة'
       : '📎 Complete PDF order summary automatically downloaded to your device\n🔗 Please attach the downloaded file to this message'}\n\n`;
 
     message += `✅ ${isRTL() ? 'شكراً لاختياركم دار المعازل!' : 'Thank you for choosing Dar Al Muaazil!'}\n`;
@@ -767,7 +769,7 @@ export default function Order() {
                           {isRTL() ? 'عاجل (2-3 أيام)' : 'Urgent (2-3 days)'}
                         </SelectItem>
                         <SelectItem value="rush">
-                          {isRTL() ? 'طارئ (24 ساعة)' : 'Rush (24 hours)'}
+                          {isRTL() ? 'طارئ (24 س��عة)' : 'Rush (24 hours)'}
                         </SelectItem>
                       </SelectContent>
                     </Select>
