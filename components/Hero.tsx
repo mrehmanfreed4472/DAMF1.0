@@ -161,7 +161,7 @@ export function Hero() {
                 <div className="flex h-full">
                   {slides.map((src, idx) => (
                     <div key={idx} className="min-w-0 flex-[0_0_100%] h-full relative">
-                      <img src={src} alt={`Slide ${idx + 1}`} className="w-full h-full object-cover" />
+                      <img src={src} alt={`Insulation and waterproofing solutions in UAE - The DAM LLC (slide ${idx + 1})`} className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-transparent to-accent/40"></div>
                     </div>
                   ))}

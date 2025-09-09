@@ -1,5 +1,3 @@
-'use client'
-
 // Updated for admin product integration
 import { Hero } from '@/components/Hero'
 import { StatsSection } from '@/components/StatsSection'
@@ -9,6 +7,13 @@ import { FeaturedProducts } from '@/components/FeaturedProducts'
 import { SuccessStoriesSection } from '@/components/SuccessStoriesSection'
 import { TestimonialsSection } from '@/components/TestimonialsSection'
 import { FAQSection } from '@/components/FAQSection'
+
+export const metadata = {
+  title: 'Insulation Experts in UAE - The DAM LLC',
+  description:
+    'The DAM LLC offers expert insulation and waterproofing solutions across the UAE. Premium materials, professional installation, and sustainable results.',
+  alternates: { canonical: '/' },
+}
 
 export default function HomePage() {
   return (

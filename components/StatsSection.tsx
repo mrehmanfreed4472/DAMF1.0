@@ -1,3 +1,5 @@
+'use client'
+
 import { motion } from 'framer-motion';
 import { TrendingUp, Users, Award, Globe, Clock, Shield, Star, CheckCircle } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
