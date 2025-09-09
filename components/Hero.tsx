@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, Shield, Award, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -161,7 +162,7 @@ export function Hero() {
                 <div className="flex h-full">
                   {slides.map((src, idx) => (
                     <div key={idx} className="min-w-0 flex-[0_0_100%] h-full relative">
-                      <img src={src} alt={`Insulation and waterproofing solutions in UAE - The DAM LLC (slide ${idx + 1})`} className="w-full h-full object-cover" />
+                      <Image src={src} alt={`Insulation and waterproofing solutions in UAE - The DAM LLC (slide ${idx + 1})`} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" priority={idx === 0} />
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-transparent to-accent/40"></div>
                     </div>
                   ))}

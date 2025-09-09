@@ -1,8 +1,14 @@
-'use client'
-
+import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import OrderSuccess from '@/components/OrderSuccess'
 import { Card, CardContent } from '@/components/ui/card'
+
+export const metadata: Metadata = {
+  title: 'Order Success | Dar Al Muaazil (DAM LLC)',
+  description: 'Your order with Dar Al Muaazil (DAM LLC) has been placed successfully. Thank you for choosing our insulation services in the UAE.',
+  keywords: 'Dar Al Muaazil, DAM LLC, order success, insulation services UAE',
+  alternates: { canonical: '/order-success' },
+}
 
 function OrderSuccessPageFallback() {
   return (

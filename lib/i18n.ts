@@ -16,7 +16,7 @@ export const translations: Record<Language, Translation> = {
     order: 'Order Now'
   },
     hero: {
-      title: 'Premium Waterproofing & Insulation Materials',
+      title: 'Dar Al Muaazil (DAM LLC) – Insulation Experts in UAE',
       subtitle: 'Dar Al Muaazil - Your trusted partner for construction excellence in the UAE',
       description: 'Supplying high-quality waterproofing and insulation materials that meet UAE standards. Based in Sharjah, serving construction professionals across the Emirates.',
       cta: 'View Products',
@@ -61,7 +61,7 @@ export const translations: Record<Language, Translation> = {
     common: {
       currency: 'AED',
       addToOrder: 'إضافة للطلب',
-      laborServices: 'إضافة خدمات العمالة',
+      laborServices: 'إضا��ة خدمات العمالة',
       contactUs: 'اتصل بنا',
       orderNow: 'اطلب الآن',
       whatsapp: 'واتساب',

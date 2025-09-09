@@ -16,37 +16,36 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.thedamllc.com'),
   title: {
-    default: 'The DAM LLC | Expert Insulation Solutions',
-    template: 'The DAM LLC | %s',
+    default: 'DAM LLC | Dar Al Muaazil – Expert Insulation Solutions UAE',
+    template: 'DAM LLC | Dar Al Muaazil – %s',
   },
   description:
-    'The DAM LLC provides premium insulation and waterproofing services with top-quality materials, expert installation, and sustainable solutions across the UAE.',
+    'Dar Al Muaazil (DAM LLC) is a leading insulation company in the UAE, providing premium insulation services for buildings, homes, and industries.',
   keywords:
-    'The DAM LLC, insulation, thermal insulation, waterproofing, UAE insulation company, building insulation services, construction materials, energy efficiency',
+    'Dar Al Muaazil, DAM LLC, thedamllc, insulation company UAE, insulation services, building insulation, UAE insulation experts, waterproofing, thermal insulation',
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     url: 'https://www.thedamllc.com/',
-    title: 'The DAM LLC | Expert Insulation Solutions',
+    title: 'Dar Al Muaazil (DAM LLC) | UAE Insulation Experts',
     description:
-      'Premium insulation and waterproofing services for homes and businesses. Quality and sustainability at The DAM LLC.',
+      'Trusted insulation services by DAM LLC (Dar Al Muaazil). Serving UAE with quality insulation solutions for homes and industries.',
     images: [
       {
-        url: 'https://www.thedamllc.com/images/og-image.jpg',
+        url: 'https://www.thedamllc.com/images/logo.png',
         width: 1200,
         height: 630,
-        alt: 'The DAM LLC - Insulation and Waterproofing Services in UAE',
+        alt: 'Dar Al Muaazil (DAM LLC) Logo',
       },
     ],
-    siteName: 'The DAM LLC',
+    siteName: 'Dar Al Muaazil (DAM LLC)',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'The DAM LLC | Expert Insulation Solutions',
+    title: 'Dar Al Muaazil (DAM LLC) | UAE Insulation Experts',
     description:
-      'Premium insulation and waterproofing services for homes and businesses. Quality and sustainability at The DAM LLC.',
-    images: ['https://www.thedamllc.com/images/og-image.jpg'],
-    creator: '@thedamllc',
+      'Trusted insulation services by DAM LLC (Dar Al Muaazil). Serving UAE with quality insulation solutions for homes and industries.',
+    images: ['https://www.thedamllc.com/images/logo.png'],
   },
   robots: {
     index: true,
@@ -54,11 +53,11 @@ export const metadata: Metadata = {
     sitemap: 'https://www.thedamllc.com/sitemap.xml',
   },
   icons: {
-    icon:
-      'https://cdn.builder.io/api/v1/image/assets%2F1f92479787d647a5873d822973f760c7%2F038432f1035b4e15868079ba9991d3e9?format=webp&width=32',
-    apple:
-      'https://cdn.builder.io/api/v1/image/assets%2F1f92479787d647a5873d822973f760c7%2F038432f1035b4e15868079ba9991d3e9?format=webp&width=180',
+    icon: '/images/logo.png',
+    shortcut: '/images/logo.png',
+    apple: '/images/logo.png',
   },
+  manifest: '/manifest.webmanifest',
 }
 
 export default function RootLayout({
@@ -91,12 +90,12 @@ export default function RootLayout({
                       {JSON.stringify({
                         '@context': 'https://schema.org',
                         '@type': 'Organization',
-                        name: 'The DAM LLC',
+                        name: 'Dar Al Muaazil (DAM LLC)',
                         url: 'https://www.thedamllc.com',
                         logo: 'https://www.thedamllc.com/images/logo.png',
                         sameAs: [
-                          'https://www.facebook.com/thedamllc',
-                          'https://www.linkedin.com/company/thedamllc',
+                          'https://www.linkedin.com/company/damllc',
+                          'https://www.facebook.com/thedamllc'
                         ],
                         contactPoint: [
                           {
@@ -104,9 +103,35 @@ export default function RootLayout({
                             telephone: '+971502342218',
                             contactType: 'customer service',
                             areaServed: 'AE',
-                            availableLanguage: ['en', 'ar'],
-                          },
+                            availableLanguage: ['en', 'ar']
+                          }
                         ],
+                        address: {
+                          '@type': 'PostalAddress',
+                          streetAddress: 'Shams Business Center',
+                          addressLocality: 'Sharjah',
+                          addressCountry: 'AE'
+                        },
+                        openingHoursSpecification: [
+                          {
+                            '@type': 'OpeningHoursSpecification',
+                            dayOfWeek: [
+                              'Sunday',
+                              'Monday',
+                              'Tuesday',
+                              'Wednesday',
+                              'Thursday'
+                            ],
+                            opens: '08:00',
+                            closes: '18:00'
+                          },
+                          {
+                            '@type': 'OpeningHoursSpecification',
+                            dayOfWeek: 'Friday',
+                            opens: '14:00',
+                            closes: '18:00'
+                          }
+                        ]
                       })}
                     </Script>
                   </RootLayoutClient>

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
 
 interface DAMLogoProps {
@@ -28,17 +29,16 @@ export function DAMLogo({
     <div className={cn('flex items-center gap-3', className)}>
       {/* Professional logo without excessive animations */}
       <div className="relative">
-        <img
-          src="https://cdn.builder.io/api/v1/image/assets%2F1f92479787d647a5873d822973f760c7%2F038432f1035b4e15868079ba9991d3e9?format=webp&width=800"
-          alt="DAM - Dar Al Muaazil LLC"
+        <Image
+          src="/images/logo.png"
+          alt="Dar Al Muaazil (DAM LLC)"
+          width={200}
+          height={200}
           className={cn(
             sizeClasses[size],
-            "w-auto object-contain transition-transform duration-300 hover:scale-105"
+            'w-auto object-contain transition-transform duration-300 hover:scale-105'
           )}
-          style={{
-            background: 'transparent',
-            mixBlendMode: 'normal'
-          }}
+          priority={false}
         />
       </div>
       
